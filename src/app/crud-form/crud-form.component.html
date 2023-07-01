@@ -1,0 +1,51 @@
+<div class="sub">
+    <h1 class="form-section__title">
+        {{ accion }} usuario
+    </h1>
+
+    <form [formGroup]="createForm" novalidate autocomplete="off" class="landing-form">
+        <mat-form-field class="form-name" appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="name" placeholder="Escribe tu Nombre" formControlName="name">
+
+            <mat-error *ngIf="createForm.controls['name'].errors">
+                El nombre es requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Escribe tu Email" formControlName="email">
+            <mat-error *ngIf="createForm.controls['email'].errors">
+                El Email es requerido
+            </mat-error>
+        </mat-form-field>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 form-section__form-element" *ngIf="!id">
+            <mat-form-field appearance="outline">
+               <mat-label>Contraseña</mat-label>
+               <input matInput placeholder="contraseña" formControlName="password" type="password" (input)="passValid()" autocomplete="off">
+            </mat-form-field>
+            <small *ngIf="passLengthErr!=''" class="mat-error">
+               {{passLengthErr}}
+            </small>
+      </div>
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 form-section__form-element" *ngIf="!id">
+            <mat-form-field appearance="outline">
+               <mat-label>Repite la Contraseña</mat-label>
+               <input matInput placeholder="pass_repeat" formControlName="pass_repeat" type="password" (input)="passValid()" autocomplete="off">
+            </mat-form-field>
+            <div *ngIf="passErrors.length>0">
+               <span *ngIf="passErrors.length>0" class="mat-error">Contraseña no válida</span>
+               <ul>
+                  <li *ngFor="let e of passErrors" class="mat-error">
+                        {{e}}
+                  </li>
+               </ul>
+            </div>
+      </div>
+
+        <button class="btn btn-primary" (click)="regresar()">Regresar</button>
+
+        <input class=" btn btn-secondary" (click)="onSubmit()" type="submit" value="Guardar">
+    </form>
+
+</div>

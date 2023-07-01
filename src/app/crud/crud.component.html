@@ -1,0 +1,33 @@
+<button (click)="form(0)">Agregar nuevo usuario</button>
+<div class="datatable-content">
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>email</th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Usuarios">
+                <td>{{ item.name | titlecase}}</td>
+                <td>{{ item.email | titlecase}}</td>
+
+                <td class="actions-content">
+
+                    <button class="btnAction" (click)="form(item.id)">
+                        editar
+                    </button>
+                    <button class="btnAction" (click)="eliminar(item)">
+                        eliminar
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<button class="btn btn-primary" (click)="logOut()" >
+    Log Out
+</button>

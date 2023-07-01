@@ -1,0 +1,34 @@
+
+
+<div class="sub" [ngClass]="{'loginActivo': loginActivo}">
+    <h1>login</h1>
+    <form [formGroup]="loginForm" novalidate autocomplete="off" class="landing-form">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Escribe tu Email" formControlName="email">
+            <mat-error *ngIf="loginForm.controls['email'].errors">
+                El Email es requerido
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="form-password" appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput type="password" placeholder="Escribe tu contraseña"
+                formControlName="password">
+    
+            <mat-error *ngIf="loginForm.controls['password'].errors">
+                La contraseña es requerida
+            </mat-error>
+        </mat-form-field>
+        <button class="btn btn-primary" (click)="singIn()" >
+            Ingresar
+        </button>
+    </form>
+    
+</div>
+<button class="btn btn-primary" (click)="logOut()" [ngClass]="{'loginActivo': ! loginActivo}" >
+    Log Out
+</button>
+
+<button class="btn btn-primary" (click)="registrarse()"  >
+   registrarse
+</button>
