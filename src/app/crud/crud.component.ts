@@ -14,7 +14,7 @@ export class CrudComponent implements OnInit {
 
   Usuarios: Array<Usuario> = [];
   public dtTrigger: Subject<any> = new Subject<any>();
-  loginActivo: boolean = false;
+
   constructor(
     private UsuarioService: UsuarioService,
     private snackBar: MatSnackBar,
@@ -57,7 +57,6 @@ export class CrudComponent implements OnInit {
   }
   public logOut() {
     localStorage.clear();
-    this.loginActivo = false;
     this.router.navigate(['']);  
   }
   private openSnackBar(message: string, action: string) {

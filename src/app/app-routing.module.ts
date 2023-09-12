@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CrudComponent } from './crud/crud.component';
 import { AuthComponent } from './auth/auth.component';
 import { CrudFormComponent } from './crud-form/crud-form.component';
+import { AuthGuard } from './service/auth.guard';
+
 
 const routes: Routes = [
   {
@@ -12,12 +14,14 @@ const routes: Routes = [
   },
   {
     path: 'crud',
-    component: CrudComponent
+    component: CrudComponent,
+    canActivate: [AuthGuard] 
 
   },
   {
     path: 'formulario',
-    component: CrudFormComponent
+    component: CrudFormComponent,
+    canActivate: [AuthGuard] 
 
   },
   {

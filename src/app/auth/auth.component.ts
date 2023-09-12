@@ -16,6 +16,7 @@ export class AuthComponent {
   public loginForm: FormGroup;
   public errMessage: string = "";
   loginActivo: boolean = false;
+  params: any;
 
   constructor(
     private router: Router,
@@ -23,64 +24,52 @@ export class AuthComponent {
     private authService: AuthService,
     private snackBar: MatSnackBar
   ) {
-      this.loginForm = this.formBuilder.group({
-        email: ['', [Validators.required]],
-        password: ['', Validators.required]
-      });
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required]],
+      password: ['', Validators.required]
+    });
   }
   ngOnInit(): void {
     this.singIn();
   }
   public singIn() {
+ 
     if (this.loginForm.valid) {
+      this.params = { ...this.loginForm.value };
+      this.authService.login(this.params).subscribe(
+        (result) => {
+          this.openSnackBar(result.message, 'Cerrar');
+          if (result.status === true) {
+            this.loginActivo = true;
+            this.router.navigate(['crud']);
+          }
+        },
+        ((error) => {
+          switch (error.status) {
+            case 500:
+              this.errMessage = "La conexión con el servidor ha fallado (500)"
+              break;
+            case 400:
+              this.errMessage = error.error.message
+              break;
+            case 0:
+              this.errMessage = "Error desconocido, intente mas tarde"
+              break;
+          }
 
-      let params = { ...this.loginForm.value };
-
-      this.authService.login(params).subscribe(
-        {
-          next: ((result) => {
-
-            this.openSnackBar(result.message, 'Cerrar');
-
-            if (result.status === true) {
-              this._saveToken(result.token);
-              this.loginActivo = true;
-              this.router.navigate(['crud']);  
-            } 
-          }),
-          error: ((error) => {
-
-            switch (error.status) {
-              case 500:
-                this.errMessage = "La conexión con el servidor ha fallado (500)"
-                break;
-              case 400:
-                this.errMessage = error.error.message
-                break;
-              case 0:
-                this.errMessage = "Error desconocido, intente mas tarde"
-                break;
-            }
-
-            console.log('completo')
-          })
-
-        }
+          console.log('completo')
+        })
       )
     }
   }
 
   public logOut() {
     localStorage.clear();
-    this.loginActivo =false;
-}
+    this.loginActivo = false;
+  }
 
-public registrarse() {
-  this.router.navigate(['formulario']);  
-}
-
-  private _saveToken(token: string): void {
-    localStorage.setItem('token', token);
+  public registrarse() {
+    this.router.navigate(['formulario']);
   }
   private openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {

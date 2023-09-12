@@ -3,7 +3,7 @@
         {{ accion }} usuario
     </h1>
 
-    <form [formGroup]="createForm" novalidate autocomplete="off" class="landing-form">
+    <form [formGroup]="createForm" novalidate autocomplete="off" class="landing-form" (ngSubmit)="onSubmit()">
         <mat-form-field class="form-name" appearance="outline">
             <mat-label>Nombre</mat-label>
             <input matInput type="name" placeholder="Escribe tu Nombre" formControlName="name">
@@ -21,31 +21,36 @@
         </mat-form-field>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 form-section__form-element" *ngIf="!id">
             <mat-form-field appearance="outline">
-               <mat-label>Contraseña</mat-label>
-               <input matInput placeholder="contraseña" formControlName="password" type="password" (input)="passValid()" autocomplete="off">
+                <mat-label>Contraseña</mat-label>
+                <input matInput placeholder="contraseña" formControlName="password" type="password"
+                    (input)="passValid()" autocomplete="off">
             </mat-form-field>
             <small *ngIf="passLengthErr!=''" class="mat-error">
-               {{passLengthErr}}
+                {{passLengthErr}}
             </small>
-      </div>
-      <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 form-section__form-element" *ngIf="!id">
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3 form-section__form-element" *ngIf="!id">
             <mat-form-field appearance="outline">
-               <mat-label>Repite la Contraseña</mat-label>
-               <input matInput placeholder="pass_repeat" formControlName="pass_repeat" type="password" (input)="passValid()" autocomplete="off">
+                <mat-label>Repite la Contraseña</mat-label>
+                <input matInput placeholder="pass_repeat" formControlName="pass_repeat" type="password"
+                    (input)="passValid()" autocomplete="off">
             </mat-form-field>
             <div *ngIf="passErrors.length>0">
-               <span *ngIf="passErrors.length>0" class="mat-error">Contraseña no válida</span>
-               <ul>
-                  <li *ngFor="let e of passErrors" class="mat-error">
+                <span *ngIf="passErrors.length>0" class="mat-error">Contraseña no válida</span>
+                <ul>
+                    <li *ngFor="let e of passErrors" class="mat-error">
                         {{e}}
-                  </li>
-               </ul>
+                    </li>
+                </ul>
             </div>
-      </div>
-
-        <button class="btn btn-primary" (click)="regresar()">Regresar</button>
+        </div>
 
         <input class=" btn btn-secondary" (click)="onSubmit()" type="submit" value="Guardar">
+        <input class="btn btn-primary" (click)="logut()" type="submit" value="Regresar" [ngClass]="{'loginActivo': loginActivo}" >
+        <input class="btn btn-primary" (click)="crud()" type="submit" value="Regresar" [ngClass]="{'loginActivo': !loginActivo}" >
+
+
+
     </form>
 
 </div>

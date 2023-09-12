@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams,  } from '@angular/common/http';
 import { Globals } from 'src/app/globals';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { UsuarioToken } from '../model/UsuarioToken';
 import { HttpResponse } from '../model/HttpResponse';
 
@@ -17,12 +17,23 @@ export class AuthService {
 
   }
 
-  public  login(loginForm: any)  {
+  public login(loginForm: any): Observable<any> {
     const url = `${this.global.apiUrl}api/login`;
-    return this.http.get<UsuarioToken>(url, { headers: this.global.httpOptions, params: loginForm });
+
+    return this.http.get<UsuarioToken>(url, {
+      headers: this.global.httpOptions,
+      params: loginForm,
+    }).pipe(
+      map((result) => {
+        // Realiza la lógica de autenticación aquí
+        if (result.status === true) {
+          localStorage.setItem('token', result.token);
+        }
+        return result; // Emite el resultado al observable
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
   }
-  // public guardar(params: any): Observable<HttpResponse> {
-  //   const url = `${this.global.apiUrl}api/productos`;
-  //   return this.http.post<HttpResponse>(url, params, { headers: this.global.httpOptionsFormData });
-  // }
 }
